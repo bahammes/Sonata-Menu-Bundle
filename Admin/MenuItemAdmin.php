@@ -55,7 +55,7 @@ class MenuItemAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
 
         $subject = $this->getSubject();
@@ -77,7 +77,7 @@ class MenuItemAdmin extends AbstractAdmin
             }
         }
 
-        $formMapper
+        $form
             ->with('config.label_menu_item',['class' => 'col-md-6', 'translation_domain' => 'ProdigiousSonataMenuBundle'])
                 ->add('name', TextType::class,
                     [
@@ -153,15 +153,15 @@ class MenuItemAdmin extends AbstractAdmin
             if(version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, "3.0", "<=")){
                 $choices[0] = 'config.label_select';
                 foreach ($pages as $page) {
-                    $choices[$page['url']] = ucfirst($page['name']);
+                    $choices[$page['url']] = ucfirst((string) $page['name']);
                 }
             }else {
                 foreach ($pages as $page) {
                     $choices['config.label_select'] = null;
-                    $choices[ucfirst($page['name'])] = $page['url'];
+                    $choices[ucfirst((string) $page['name'])] = $page['url'];
                 }
             }
-            $formMapper
+            $form
                 ->with('config.label_menu_link', ['class' => 'col-md-6', 'translation_domain' => 'ProdigiousSonataMenuBundle'])
                     ->add('page', ChoiceType::class,
                         [
@@ -179,7 +179,7 @@ class MenuItemAdmin extends AbstractAdmin
         }
 
 
-        $formMapper
+        $form
             ->with('config.label_menu_link', ['class' => 'col-md-6', 'translation_domain' => 'ProdigiousSonataMenuBundle'])
                 ->add('url', TextType::class,
                     [
@@ -205,27 +205,19 @@ class MenuItemAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper->addIdentifier('name', null, ['label' => 'config.label_name', 'translation_domain' => 'ProdigiousSonataMenuBundle']);
+        $list->addIdentifier('name', null, ['label' => 'config.label_name', 'translation_domain' => 'ProdigiousSonataMenuBundle']);
 
         if(version_compare(\Symfony\Component\HttpKernel\Kernel::VERSION, "3.0", "<")){
-            $listMapper->add('menu', null, [], EntityType::class,
-                [
-                    'class'    => $this->menuClass,
-                    'property' => 'name',
-                ]
+            $list->add('menu', null, []
             );
         }else{
-            $listMapper->add('menu', null, [], EntityType::class,
-                [
-                    'class'    => $this->menuClass,
-                    'choice_label' => 'name',
-                ]
+            $list->add('menu', null, []
             );
         }
 
-        $listMapper->add('_action', 'actions', [
+        $list->add('_action', 'actions', [
             'label' => 'config.label_modify', 
             'translation_domain' => 'ProdigiousSonataMenuBundle', 
             'actions' => [
@@ -238,9 +230,9 @@ class MenuItemAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper->add('name')
+        $filter->add('name')
             ->add('menu'
             );
     }
@@ -282,7 +274,7 @@ class MenuItemAdmin extends AbstractAdmin
         $url = $object->getUrl();
 
         if(empty($url)) {
-            $url = $this->slugify->slugify(strip_tags($object->getName()));
+            $url = $this->slugify->slugify(strip_tags((string) $object->getName()));
 
             if($object->hasParent()) {
                 $parent = $object->getParent();
@@ -300,7 +292,7 @@ class MenuItemAdmin extends AbstractAdmin
      */
     public function toString(object $object): string
     {
-        return $object instanceof MenuItemInterface ? $object->getName() : $this->getTranslator()->trans("config.label_menu_item", array(), 'ProdigiousSonataMenuBundle');
+        return $object instanceof MenuItemInterface ? $object->getName() : $this->getTranslator()->trans("config.label_menu_item", [], 'ProdigiousSonataMenuBundle');
     }
 
 }

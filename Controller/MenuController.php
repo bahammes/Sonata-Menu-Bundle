@@ -63,7 +63,7 @@ class MenuController extends Controller
                 $request->getSession()->getFlashBag()->add('notice',
                     $this->translator->trans(
                         $update ? 'config.label_saved' : 'config.label_error',
-                        array(),
+                        [],
                         'ProdigiousSonataMenuBundle'
                     )
                 );
@@ -82,11 +82,11 @@ class MenuController extends Controller
 
         $menus = $menuManager->findAll();
 
-    	return $this->renderWithExtraParams('@ProdigiousSonataMenu/Menu/menu_edit_items.html.twig', array(
+    	return $this->renderWithExtraParams('@ProdigiousSonataMenu/Menu/menu_edit_items.html.twig', [
             'menus' => $menus,
     		'menu' => $object,
             'menuItemsEnabled' => $menuItemsEnabled,
             'menuItemsDisabled' => $menuItemsDisabled
-        ));
+        ]);
     }
 }

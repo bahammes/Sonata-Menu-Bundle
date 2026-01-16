@@ -2,10 +2,9 @@
 
 namespace Prodigious\Sonata\MenuBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Prodigious\Sonata\MenuBundle\Admin\MenuAdmin;
-use Prodigious\Sonata\MenuBundle\Admin\MenuItemAdmin;
 
 /**
  * This is the class that validates and merges configuration from your app/config files.
@@ -17,10 +16,11 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('prodigious_sonata_menu');
         $rootNode = $treeBuilder->getRootNode();
+        /** @var ArrayNodeDefinition $rootNode */
 
         $rootNode
             ->children()

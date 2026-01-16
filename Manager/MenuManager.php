@@ -100,7 +100,7 @@ class MenuManager
     /**
      * @return MenuInterface[]
      */
-    public function findAll()
+    public function findAll(): array
     {
         return $this->menuRepository->findAll();
     }
@@ -143,7 +143,7 @@ class MenuManager
      *
      * @return MenuItem[]
      */
-    public function getMenuItems(MenuInterface $menu, $root = self::ITEM_ALL, $status = self::STATUS_ALL)
+    public function getMenuItems(MenuInterface $menu, $root = self::ITEM_ALL, $status = self::STATUS_ALL): array
     {
         $menuItems = $menu->getMenuItems()->toArray();
 
@@ -186,7 +186,7 @@ class MenuManager
 
             foreach ($items as $pos => $item) {
                 /** @var MenuItem $menuItem */
-                $menuItem = $this->menuItemRepository->findOneBy(array('id' => $item->id, 'menu' => $menu));
+                $menuItem = $this->menuItemRepository->findOneBy(['id' => $item->id, 'menu' => $menu]);
 
                 if($menuItem) {
                     $menuItem

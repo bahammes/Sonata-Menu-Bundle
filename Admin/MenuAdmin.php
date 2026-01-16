@@ -17,9 +17,9 @@ class MenuAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('config.label_menu', ['translation_domain' => 'ProdigiousSonataMenuBundle'])
                 ->add('name', TextType::class,
                     [
@@ -44,15 +44,15 @@ class MenuAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('id', null, ['label' => 'config.label_id', 'translation_domain' => 'ProdigiousSonataMenuBundle'])
             ->addIdentifier('alias', null, ['label' => 'config.label_alias', 'translation_domain' => 'ProdigiousSonataMenuBundle'])
             ->addIdentifier('name', null, ['label' => 'config.label_name', 'translation_domain' => 'ProdigiousSonataMenuBundle'])
         ;
 
-        $listMapper->add('_action', 'actions', [
+        $list->add('_action', 'actions', [
             'label' => 'config.label_modify',
             'translation_domain' => 'ProdigiousSonataMenuBundle',
             'actions' => [
@@ -66,9 +66,9 @@ class MenuAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('name')
             ->add('alias')
         ;
@@ -95,7 +95,7 @@ class MenuAdmin extends AbstractAdmin
      */
     public function toString(object $object): string
     {
-        return $object instanceof MenuInterface ? $object->getName() : $this->getTranslator()->trans("config.label_menu", array(), 'ProdigiousSonataMenuBundle');
+        return $object instanceof MenuInterface ? $object->getName() : $this->getTranslator()->trans("config.label_menu", [], 'ProdigiousSonataMenuBundle');
     }
 
     /**

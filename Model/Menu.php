@@ -7,31 +7,26 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Menu
- *
- * @ORM\Table(name="sonata_menu")
- * @ORM\MappedSuperclass
- * @ORM\InheritanceType("SINGLE_TABLE")
  */
+#[ORM\MappedSuperclass]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Table(name: 'sonata_menu')]
 abstract class Menu implements MenuInterface
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
      */
+    #[ORM\Column(name: 'name', type: 'string', length: 255)]
     protected $name;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="alias", type="string", length=255)
      */
+    #[ORM\Column(name: 'alias', type: 'string', length: 255)]
     protected $alias;
 
-    /**
-     * @ORM\OneToMany(targetEntity="\Prodigious\Sonata\MenuBundle\Model\MenuItemInterface", mappedBy="menu", cascade={"persist"})
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
+    #[ORM\OneToMany(targetEntity: MenuItemInterface::class, mappedBy: 'menu', cascade: ['persist'])]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     protected $menuItems;
 
     /**
@@ -139,7 +134,7 @@ abstract class Menu implements MenuInterface
         return $this->menuItems;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name ?? "";
     }

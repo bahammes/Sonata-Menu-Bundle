@@ -75,7 +75,7 @@ class MenuItemController extends Controller
                 $menu = $object->getMenu();
 
                 if($menu && $this->admin->isChild()) {
-                    $url = $this->admin->getParent()->generateObjectUrl('items', $menu, array('id' => $menu->getId()));
+                    $url = $this->admin->getParent()->generateObjectUrl('items', $menu, ['id' => $menu->getId()]);
                 }
             }
 

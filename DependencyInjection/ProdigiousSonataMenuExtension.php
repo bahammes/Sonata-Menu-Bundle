@@ -37,7 +37,7 @@ class ProdigiousSonataMenuExtension extends Extension
      * @param array         $config
      * @return $this
      */
-    protected function registerEntities(ContainerBuilder $container, array $config)
+    protected function registerEntities(ContainerBuilder $container, array $config): static
     {
         if (isset($config['entities'])) {
 
@@ -62,7 +62,7 @@ class ProdigiousSonataMenuExtension extends Extension
      * @param array         $config
      * @return $this
      */
-    protected function registerAdmins(ContainerBuilder $container, array $config)
+    protected function registerAdmins(ContainerBuilder $container, array $config): static
     {
         if (isset($config['admins'])) {
             if (isset($config['admins']['menu'])) {

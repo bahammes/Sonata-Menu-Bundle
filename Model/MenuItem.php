@@ -3,58 +3,52 @@
 namespace Prodigious\Sonata\MenuBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * MenuItem
- *
- * @ORM\Table(name="sonata_menu_item")
- * @ORM\MappedSuperclass
- * @ORM\InheritanceType("SINGLE_TABLE")
  */
+#[ORM\MappedSuperclass]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Table(name: 'sonata_menu_item')]
 abstract class MenuItem implements MenuItemInterface
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
      */
-    protected $name;
+    #[ORM\Column(name: 'name', type: 'string', length: 255)]
+    protected string $name = '';
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="url", type="string", length=255, nullable=true)
+     * @var ?string
      */
-    protected $url;
+    #[ORM\Column(name: 'url', type: 'string', length: 255, nullable: true)]
+    protected ?string $url = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="class_attribute", type="string", length=255, nullable=true)
+     * @var ?string
      */
-    protected $classAttribute;
+    #[ORM\Column(name: 'class_attribute', type: 'string', length: 255, nullable: true)]
+    protected ?string $classAttribute = null;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="position", type="smallint", options={"unsigned"=true}, nullable=true)
+     * @var ?int
      */
-    protected $position;
+    #[ORM\Column(name: 'position', type: 'smallint', options: ['unsigned' => true], nullable: true)]
+    protected ?int $position = null;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="target", type="boolean", nullable=true, options={"default":false})
+     * @var ?bool
      */
-    protected $target;
+    #[ORM\Column(name: 'target', type: 'boolean', nullable: true, options: ['default' => false])]
+    protected ?bool $target = false;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="enabled", type="boolean", nullable=true, options={"default":true})
+     * @var ?bool
      */
-    protected $enabled;
+    #[ORM\Column(name: 'enabled', type: 'boolean', nullable: true, options: ['default' => true])]
+    protected ?bool $enabled = true;
 
     /**
      * @var \stdClass
@@ -63,26 +57,25 @@ abstract class MenuItem implements MenuItemInterface
     protected $page;
 
     /**
-     * @var MenuItemInterface
-     *
-     * @ORM\ManyToOne(targetEntity="\Prodigious\Sonata\MenuBundle\Model\MenuItemInterface", inversedBy="children", cascade={"persist"})
-     * @ORM\JoinColumn(name="parent", referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     * @var ?MenuItemInterface
      */
-    protected $parent;
+    #[ORM\ManyToOne(targetEntity: MenuItemInterface::class, inversedBy: 'children', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'parent', referencedColumnName: 'id', onDelete: 'SET NULL', nullable: true)]
+    protected ?MenuItemInterface $parent = null;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="\Prodigious\Sonata\MenuBundle\Model\MenuItemInterface", mappedBy="parent", cascade={"all"})
-     * @ORM\OrderBy({"position" = "ASC"})
      */
+    #[ORM\OneToMany(targetEntity: MenuItemInterface::class, mappedBy: 'parent', cascade: ['all'])]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     protected $children;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Prodigious\Sonata\MenuBundle\Model\MenuInterface", inversedBy="menuItems")
-     * @ORM\JoinColumn(name="menu", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @var ?MenuInterface
      */
-    protected $menu;
+    #[ORM\ManyToOne(targetEntity: MenuInterface::class, inversedBy: 'menuItems')]
+    #[ORM\JoinColumn(name: 'menu', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected ?MenuInterface $menu = null;
 
     /**
      * Class constructor
@@ -101,7 +94,7 @@ abstract class MenuItem implements MenuItemInterface
      * @param string $name
      * @return MenuItem
      */
-    public function setName($name)
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -113,7 +106,7 @@ abstract class MenuItem implements MenuItemInterface
      *
      * @return string 
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -124,7 +117,7 @@ abstract class MenuItem implements MenuItemInterface
      * @param string $url
      * @return MenuItem
      */
-    public function setUrl($url)
+    public function setUrl(string $url): static
     {
         $this->url = $url;
 
@@ -134,9 +127,9 @@ abstract class MenuItem implements MenuItemInterface
     /**
      * Get url
      *
-     * @return string 
+     * @return ?string
      */
-    public function getUrl()
+    public function getUrl(): ?string
     {
         return $this->url;
     }
@@ -144,10 +137,10 @@ abstract class MenuItem implements MenuItemInterface
     /**
      * Set classAttribute
      *
-     * @param string $classAttribute
+     * @param ?string $classAttribute
      * @return MenuItem
      */
-    public function setClassAttribute($classAttribute)
+    public function setClassAttribute(?string $classAttribute): static
     {
         $this->classAttribute = $classAttribute;
 
@@ -157,9 +150,9 @@ abstract class MenuItem implements MenuItemInterface
     /**
      * Get classAttribute
      *
-     * @return string 
+     * @return ?string
      */
-    public function getClassAttribute()
+    public function getClassAttribute(): ?string
     {
         return $this->classAttribute;
     }
@@ -167,12 +160,12 @@ abstract class MenuItem implements MenuItemInterface
     /**
      * Set position
      *
-     * @param int $position
+     * @param ?int $position
      * @return MenuItem
      */
-    public function setPosition($position)
+    public function setPosition(?int $position)
     {
-        $this->position = $position;
+        $this->position = (int)$position;
 
         return $this;
     }
@@ -182,20 +175,19 @@ abstract class MenuItem implements MenuItemInterface
      *
      * @return int 
      */
-    public function getPosition()
+    public function getPosition(): int
     {
-        return $this->position;
+        return (int)$this->position;
     }
 
     /**
      * Set target
      *
-     * @param boolean $enabled
-     * @return MenuItem
+     * @param bool $target
      */
-    public function setTarget($target)
+    public function setTarget(bool $target): static
     {
-        $this->target = $target;
+        $this->target = (bool)$target;
 
         return $this;
     }
@@ -203,20 +195,19 @@ abstract class MenuItem implements MenuItemInterface
     /**
      * Get target
      *
-     * @return boolean 
+     * @return bool
      */
-    public function getTarget()
+    public function getTarget(): bool
     {
-        return $this->target;
+        return (bool)$this->target;
     }
 
     /**
      * Set enabled
      *
-     * @param boolean $enabled
-     * @return MenuItem
+     * @param bool $enabled
      */
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled): static
     {
         $this->enabled = $enabled;
 
@@ -236,11 +227,11 @@ abstract class MenuItem implements MenuItemInterface
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return bool
      */
-    public function getEnabled()
+    public function getEnabled(): bool
     {
-        return $this->enabled;
+        return (bool)$this->enabled;
     }
 
     /**
@@ -259,7 +250,7 @@ abstract class MenuItem implements MenuItemInterface
      *
      * @return MenuItem
      */
-    public function setPage($page)
+    public function setPage($page): static
     {
         $this->page = $page;
 
@@ -269,9 +260,9 @@ abstract class MenuItem implements MenuItemInterface
     /**
      * Get parent
      *
-     * @return MenuItemInterface
+     * @return ?MenuItemInterface
      */
-    public function getParent()
+    public function getParent(): ?MenuItemInterface
     {
         return $this->parent;
     }
@@ -279,16 +270,17 @@ abstract class MenuItem implements MenuItemInterface
     /**
      * Set parent
      *
-     * @param MenuItemInterface $parent
+     * @param ?MenuItemInterface $parent
      *
      * @return MenuItem
      */
-    public function setParent($parent)
+    public function setParent(?MenuItemInterface $parent): static
     {
         $this->parent = $parent;
         
-        if(!is_null($parent))
+        if(!is_null($parent)) {
             $parent->addChild($this);
+        }
 
         return $this;
     }
@@ -300,7 +292,7 @@ abstract class MenuItem implements MenuItemInterface
      *
      * @return $this
      */
-    public function addChild(MenuItemInterface $child)
+    public function addChild(MenuItemInterface $child): static
     {
         $this->children[] = $child;
 
@@ -312,7 +304,7 @@ abstract class MenuItem implements MenuItemInterface
      *
      * @param MenuItemInterface $child
      */
-    public function removeChild(MenuItemInterface $child)
+    public function removeChild(MenuItemInterface $child): void
     {
         $this->children->removeElement($child);
     }
@@ -320,11 +312,11 @@ abstract class MenuItem implements MenuItemInterface
     /**
      * Set children
      *
-     * @param ArrayCollection $children
+     * @param Collection $children
      *
      * @return MenuItem
      */
-    public function setChildren(ArrayCollection $children)
+    public function setChildren(Collection $children): static
     {
         $this->children = $children;
 
@@ -336,7 +328,7 @@ abstract class MenuItem implements MenuItemInterface
      *
      * @return Collection
      */
-    public function getChildren()
+    public function getChildren(): Collection
     {
         return $this->children;
     }
@@ -348,7 +340,7 @@ abstract class MenuItem implements MenuItemInterface
      *
      * @return MenuItem
      */
-    public function setMenu(MenuInterface $menu)
+    public function setMenu(MenuInterface $menu): static
     {
         $this->menu = $menu;
 
@@ -360,7 +352,7 @@ abstract class MenuItem implements MenuItemInterface
      *
      * @return MenuInterface
      */
-    public function getMenu()
+    public function getMenu(): MenuInterface
     {
         return $this->menu;
     }
@@ -368,7 +360,7 @@ abstract class MenuItem implements MenuItemInterface
     /**
      * Has child
      */
-    public function hasChild()
+    public function hasChild(): bool
     {
         return count($this->children) > 0;
     }
@@ -376,25 +368,28 @@ abstract class MenuItem implements MenuItemInterface
     /**
      * Has parent
      */
-    public function hasParent()
+    public function hasParent(): bool
     {
         return !is_null($this->parent);
     }
 
-    public function getActiveChildren()
+    /**
+     * @return MenuItemInterface[]
+     */
+    public function getActiveChildren(): array
     {
-        $children = array();
+        $children = [];
 
         foreach ($this->children as $child) {
             if($child->enabled) {
-                array_push($children, $child);
+                $children[] = $child;
             }
         }
 
         return $children;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name ?? "";
     }
